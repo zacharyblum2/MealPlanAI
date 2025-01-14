@@ -1,78 +1,72 @@
-import { memo, useCallback, useState } from "react"; 
-import { View, Text, Button, StyleSheet, TouchableOpacity } from "react-native";
-import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
+import React from "react";
+import { View, Text, StyleSheet, TextInput } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { PhotosPopup } from "@/components/ui/PhotosPopup";
 
-// TODO: Create bottom input w/ camera button
-// TODO: Create mock meal plan text from API
-// TODO: Figure out correct screen file formatting using expo router
-export const HomePage = memo(() => {
-  const [facing, setFacing] = useState<CameraType>('back');
-  const [permission, requestPermission] = useCameraPermissions();
-
-  if (!permission) {
-    return (
-      <View>
-        {/* Loading Indicator */}
-      </View>
-    )
-  }
-
-  if (!permission.granted) {
-    // Camera permissions are not granted yet.
-    return (
-      <View style={styles.container}>
-        <Text style={styles.message}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
-      </View>
-    );
-  }
-
-  function toggleCameraFacing() {
-    setFacing(current => (current === 'back' ? 'front' : 'back'));
-  }
-
+export const HomePage = () => {
   return (
-    <View style={styles.container}>
-      <CameraView style={styles.camera} facing={facing}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text style={styles.text}>Flip Camera</Text>
-          </TouchableOpacity>
-        </View>
-      </CameraView>
-    </View>
-  );
+    <SafeAreaView style={styles.parentContainer}>
+      <KeyboardAwareScrollView
+        style={styles.container}
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        contentContainerStyle={styles.scrollViewContainer}
+        enableOnAndroid={true} // Enables for Android as well
+      >
+        <View style={styles.content}>
+          <Text>
 
-});
+          </Text>
+        </View>
+
+        {/* Bottom TextInput section */}
+        <View style={styles.bottomContainer}>
+          <PhotosPopup />
+          <TextInput
+            style={styles.textInput}
+            placeholder="Recipe"
+            placeholderTextColor="black"
+          />
+        </View>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
+  );
+};
 
 export default HomePage;
 
 const styles = StyleSheet.create({
+  parentContainer: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    justifyContent: 'center',
   },
-  message: {
-    textAlign: 'center',
-    paddingBottom: 10,
+  scrollViewContainer: {
+    flexGrow: 1,
+    justifyContent: "flex-start", // Ensure content starts from the top
   },
-  camera: {
+  content: {
     flex: 1,
+    justifyContent: "flex-start",
+    padding: 20,
   },
-  buttonContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    margin: 64,
+  bottomContainer: {
+    backgroundColor: "#e3e3e3",
+    flexDirection: "row",
+    gap: 8,
+    borderRadius: 20,
+    marginHorizontal: 10,
+    alignItems: "center",
+    minHeight: 40,
+    paddingLeft: 8
   },
-  button: {
-    flex: 1,
-    alignSelf: 'flex-end',
-    alignItems: 'center',
+  textInput: {
+    width: "80%",
+    fontSize: 17,
+    color: "green",
   },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
+  cameraButton: {
+    padding: 0,
   },
 });

@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Drawer } from 'expo-router/drawer';
 import { memo, useCallback } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { MenuProvider } from 'react-native-popup-menu';
 
 export const DrawerLayout = memo(() => {
 
@@ -13,37 +14,39 @@ export const DrawerLayout = memo(() => {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Drawer 
-        drawerContent={handleDrawerContent}
-        screenOptions={{
-          drawerHideStatusBarOnOpen: true,
-          drawerLabelStyle: {
-             marginLeft: -2,
-          },
-        }}
-      >
-        <Drawer.Screen 
-          name="index" 
-          options={{
-            drawerLabel: "Home",
-            title: "Home",
-            // Get size and color per drawer specifications.
-            drawerIcon: ({size, color}) => (
-              <Ionicons name="home-outline" size={size} color={color} />
-            )
+      <MenuProvider>
+        <Drawer 
+          drawerContent={handleDrawerContent}
+          screenOptions={{
+            drawerHideStatusBarOnOpen: true,
+            drawerLabelStyle: {
+              marginLeft: -2,
+            },
           }}
-        />
-        <Drawer.Screen 
-          name="settings" 
-          options={{
-            drawerLabel: "Settings",
-            title: "Settings",
-            drawerIcon: ({size, color}) => (
-              <Ionicons name="settings-outline" size={size} color={color} />
-            )
-          }}
-        />
-      </Drawer>
+        >
+          <Drawer.Screen 
+            name="index" 
+            options={{
+              drawerLabel: "Home",
+              title: "Home",
+              // Get size and color per drawer specifications.
+              drawerIcon: ({size, color}) => (
+                <Ionicons name="home-outline" size={size} color={color} />
+              )
+            }}
+          />
+          <Drawer.Screen 
+            name="settings" 
+            options={{
+              drawerLabel: "Settings",
+              title: "Settings",
+              drawerIcon: ({size, color}) => (
+                <Ionicons name="settings-outline" size={size} color={color} />
+              )
+            }}
+          />
+        </Drawer>
+      </MenuProvider>
     </GestureHandlerRootView>
   );
 })
